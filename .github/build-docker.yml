@@ -1,17 +1,22 @@
-name: Build and Publish image to dockerhub
+name: Build and Publish image to DockerHub
+
 on:
   push:
-    branch:
+    branches:
       - dev
 
 jobs:
   publish_images:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: build
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
         run: docker build . -t monta55ir/docker-api:latest
-      - name: push image to docker hub
-        run: |
-          docker push monta55ir/docker-api:latest
+
+      - name: Push Docker image to DockerHub
+        run: docker push monta55ir/docker-api:latest
