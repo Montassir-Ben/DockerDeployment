@@ -1,5 +1,8 @@
-#This is a very simple, sample Image 
-FROM ubuntu 
+FROM node:14
 
-RUN apt-get update 
-CMD [“echo”,”Image created”] 
+WORKDIR /app
+COPY package.json ./
+
+COPY . .
+ EXPOSE 3000
+ CMD ["node", "index.js"]
